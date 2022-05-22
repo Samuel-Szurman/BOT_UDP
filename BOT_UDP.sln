@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32106.194
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BOT_UDP", "BOT_UDP\BOT_UDP.csproj", "{68D099DC-393B-4A35-A83E-6FE0BB8174FB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{68D099DC-393B-4A35-A83E-6FE0BB8174FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68D099DC-393B-4A35-A83E-6FE0BB8174FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68D099DC-393B-4A35-A83E-6FE0BB8174FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68D099DC-393B-4A35-A83E-6FE0BB8174FB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {27C4F16D-41AB-445F-8FC8-25DC2CA92B92}
+	EndGlobalSection
+EndGlobal
