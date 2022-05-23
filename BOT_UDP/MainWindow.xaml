@@ -5,21 +5,20 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BOT_UDP"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="888">
-    <Grid>
-        <Label x:Name="randomLabel" Content="Label" HorizontalAlignment="Left" Margin="723,67,0,0" VerticalAlignment="Top" Width="116"/>
-        <Label Content="CONFIGURATION" HorizontalAlignment="Left" Margin="45,41,0,0" VerticalAlignment="Top" FontWeight="Bold"/>
-        <Label Content="IP" HorizontalAlignment="Left" Margin="45,85,0,0" VerticalAlignment="Top"/>
-        <Label Content="UDP PORT" HorizontalAlignment="Left" Margin="45,139,0,0" VerticalAlignment="Top"/>
-        <Label Content="INCOMING DATA" HorizontalAlignment="Left" Margin="58,252,0,0" VerticalAlignment="Top" FontWeight="Bold"/>
-        <TextBox x:Name="IP_textBox" HorizontalAlignment="Left" Margin="45,121,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="325"/>
-        <TextBox x:Name="port_textBox" HorizontalAlignment="Left" Margin="45,165,0,0" Text="50000" TextWrapping="Wrap" VerticalAlignment="Top" Width="325"/>
-        <ScrollViewer
-            VerticalScrollBarVisibility="Auto">
-            <TextBlock x:Name="messageTextBlock" HorizontalAlignment="Left" Margin="61,283,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="117" Width="712" ><Run Language="pl-pl"/></TextBlock>
-        </ScrollViewer>
-        <Label Content="UDP-BOT v1.0.0" HorizontalAlignment="Left" Margin="723,41,0,0" VerticalAlignment="Top" FontWeight="Bold"/>
-        <Button x:Name="start_stop_button" Content="START" HorizontalAlignment="Left" Margin="45,0,0,0" VerticalAlignment="Center" Width="325" Click="start_stop_button_Click"/>
+        Title="MainWindow" Height="450" Width="608">
+    <Grid HorizontalAlignment="Center" Width="608">
+        <Label x:Name="randomLabel" Content="" HorizontalAlignment="Left" Margin="370,83,0,0" VerticalAlignment="Top" Width="120" Height="25"/>
+        <Label Content="CONFIGURATION" HorizontalAlignment="Left" Margin="50,30,0,0" VerticalAlignment="Top" FontWeight="Bold"/>
+        <Label Content="IP" HorizontalAlignment="Left" Margin="50,60,0,0" VerticalAlignment="Top"/>
+        <Label Content="UDP PORT" HorizontalAlignment="Left" Margin="50,110,0,0" VerticalAlignment="Top"/>
+        <Label Content="INCOMING DATA" HorizontalAlignment="Left" Margin="50,220,0,0" VerticalAlignment="Top" FontWeight="Bold"/>
+        <TextBox x:Name="IP_textBox" HorizontalAlignment="Left" Margin="50,85,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="200"/>
+        <TextBox x:Name="port_textBox" HorizontalAlignment="Left" Margin="50,140,0,0" Text="50000" TextWrapping="Wrap" VerticalAlignment="Top" Width="200"/>
+        
+        <TextBox x:Name="messageTextBox" HorizontalAlignment="Left" Margin="50,250,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="150" Width="500" FontFamily="Segoe UI" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible" ScrollViewer.CanContentScroll="True" IsReadOnly="True" />
+
+        <Label Content="UDP-BOT v1.0.0" HorizontalAlignment="Left" Margin="370,30,0,0" VerticalAlignment="Top" FontWeight="Bold"/>
+        <Button x:Name="start_stop_button" Content="START" HorizontalAlignment="Left" Margin="50,-50,0,0" VerticalAlignment="Center" Width="200" Click="start_stop_button_Click"/>
 
     </Grid>
 </Window>

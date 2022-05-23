@@ -16,6 +16,7 @@ using System.Runtime;
 using System.Net.Sockets;
 using System.Net;
 using System.Threading;
+using System.Net.NetworkInformation;
 
 namespace BOT_UDP
 {
@@ -31,62 +32,60 @@ namespace BOT_UDP
         IPEndPoint groupEP;
         private int port;
         private string messageText;
+        IPAddress[] localIPs;
 
         UdpClient udpClient;
         public MainWindow()
         {
             InitializeComponent();
-            Random random = new Random();
+            localIPs = Dns.GetHostAddresses(Dns.GetHostName());
+            Random random = new();
             randomInt = random.Next();
             randomLabel.Content = Convert.ToString(randomInt);
-            var dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
+            System.Windows.Threading.DispatcherTimer dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
             dispatcherTimer.Tick += new EventHandler(UpdateRandomValue);
             dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
             dispatcherTimer.Start();
-            
+
         }
 
         private void MyMethod()
         {
             udpClient = new UdpClient();
             udpClient.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
-            udpClient.Client.Bind(new IPEndPoint(IPAddress.Any, port));
+            udpClient.Client.Bind(new IPEndPoint(IP, port));
 
-            
+
             try
             {
-                
+                IPEndPoint RemoteIpEndPoint = new(IP, 0);
 
-
-                IPEndPoint RemoteIpEndPoint = new IPEndPoint(IPAddress.Any, 0);
-
-                string message1 = String.Empty;
+                string message1 = string.Empty;
                 do
                 {
-                    Byte[] receiveBytes = udpClient.Receive(ref RemoteIpEndPoint);
+                    byte[] receiveBytes = udpClient.Receive(ref RemoteIpEndPoint);
                     message1 = Encoding.ASCII.GetString(receiveBytes);
                     //messageText = "This is the message you received: " + message1;
-                    String timeStamp = DateTime.Now.ToString();
+                    string timeStamp = DateTime.Now.ToString();
                     IPAddress senderAddress = RemoteIpEndPoint.Address;
-                    messageText += "Date: " + timeStamp + "   IP: " + senderAddress.ToString() + "   Message:" + message1 + "\n";
-                    
+                    messageText += "Date: " + timeStamp + "   IP: " + senderAddress.ToString() + "   Message: " + message1 + "\n";
+
                     int senderPort = RemoteIpEndPoint.Port;
-                    
+
 
                     UdpClient udpClient2 = new UdpClient();
                     udpClient2.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
                     udpClient2.Connect(senderAddress, senderPort);
                     string message2 = "ACK! " + Convert.ToString(randomInt);
-                    message2 = Convert.ToString(senderPort);
                     Byte[] sendBytes = Encoding.ASCII.GetBytes(message2);
                     udpClient2.Send(sendBytes, sendBytes.Length);
                     udpClient2.Close();
 
-                    
+
                 }
                 while (isStarted);
                 udpClient.Close();
-                
+
             }
             catch (Exception ex)
             {
@@ -99,7 +98,7 @@ namespace BOT_UDP
             Random random = new Random();
             randomInt = random.Next();
             randomLabel.Content = Convert.ToString(randomInt);
-            messageTextBlock.Text = messageText;
+            messageTextBox.Text = messageText;
         }
 
 
@@ -110,21 +109,48 @@ namespace BOT_UDP
                 isStarted = !isStarted;
                 start_stop_button.Content = "START";
                 port_textBox.IsEnabled = true;
+                IP_textBox.IsEnabled = true;
             }
             else
             {
                 bool isNumeric = int.TryParse(port_textBox.Text, out port);
                 if (isNumeric)
                 {
-                    if(port >= 5000 && port <= 60000)
+                    if (port is >= 5000 and <= 60000)
                     {
-                        //StartListener(port, messageTextBlock);
-
-                        isStarted = !isStarted;
-                        start_stop_button.Content = "STOP";
-                        port_textBox.IsEnabled = false;
-                        Thread myNewThread = new Thread(() => MyMethod());
-                        myNewThread.Start();
+                        //StartListener(port, messageTextBox);
+                        if (IP_textBox.Text == string.Empty)
+                        {
+                            IP = IPAddress.Any;
+                            isStarted = !isStarted;
+                            start_stop_button.Content = "STOP";
+                            port_textBox.IsEnabled = false;
+                            IP_textBox.IsEnabled = false;
+                            new Thread(() => MyMethod()).Start();
+                        }
+                        else
+                        {
+                            try
+                            {
+                                IP = IPAddress.Parse(IP_textBox.Text);
+                                if (localIPs.Contains(IP))
+                                {
+                                    isStarted = !isStarted;
+                                    start_stop_button.Content = "STOP";
+                                    port_textBox.IsEnabled = false;
+                                    IP_textBox.IsEnabled = false;
+                                    new Thread(() => MyMethod()).Start();
+                                }
+                                else
+                                {
+                                    IP_textBox.Text = "Podany adres IP nie jest lokalny";
+                                }
+                            }
+                            catch (Exception)
+                            {
+                                IP_textBox.Text = "Niepoprawny adres IP";
+                            }
+                        }
                     }
                     else
                     {
@@ -135,33 +161,6 @@ namespace BOT_UDP
                 {
                     port_textBox.Text = "Błąd";
                 }
-            }
-        }
-
-        private static void StartListener(int port, TextBlock textBlock)
-        {
-            UdpClient listener = new UdpClient(port);
-            IPEndPoint groupEP = new IPEndPoint(IPAddress.Any, port);
-
-            try
-            {
-                while (true)
-                {
-                    Console.WriteLine("Waiting for broadcast");
-                    byte[] bytes = listener.Receive(ref groupEP);
-
-                    string text = $"Received broadcast from {groupEP} :";
-                    text += $" {Encoding.ASCII.GetString(bytes, 0, bytes.Length)}";
-                    textBlock.Text = text;
-                }
-            }
-            catch (SocketException e)
-            {
-                Console.WriteLine(e);
-            }
-            finally
-            {
-                listener.Close();
             }
         }
     }
