@@ -43,6 +43,7 @@ namespace BOT_UDP
             dispatcherTimer.Tick += new EventHandler(UpdateRandomValue);
             dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
             dispatcherTimer.Start();
+            
         }
 
         private void MyMethod()
@@ -51,28 +52,41 @@ namespace BOT_UDP
             udpClient.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
             udpClient.Client.Bind(new IPEndPoint(IPAddress.Any, port));
 
-            UdpClient udpClient2 = new UdpClient();
-            udpClient2.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
-            udpClient2.Connect("localhost", port);
+            
             try
             {
-                string message = "ACK!" + Convert.ToString(randomInt);
-                Byte[] sendBytes = Encoding.ASCII.GetBytes(message);
-                udpClient2.Send(sendBytes, sendBytes.Length);
+                
 
 
                 IPEndPoint RemoteIpEndPoint = new IPEndPoint(IPAddress.Any, 0);
 
-                string message2 = String.Empty;
+                string message1 = String.Empty;
                 do
                 {
                     Byte[] receiveBytes = udpClient.Receive(ref RemoteIpEndPoint);
-                    message2 = Encoding.ASCII.GetString(receiveBytes);
-                    messageText = "This is the message you received: " + message2;
+                    message1 = Encoding.ASCII.GetString(receiveBytes);
+                    //messageText = "This is the message you received: " + message1;
+                    String timeStamp = DateTime.Now.ToString();
+                    IPAddress senderAddress = RemoteIpEndPoint.Address;
+                    messageText += "Date: " + timeStamp + "   IP: " + senderAddress.ToString() + "   Message:" + message1 + "\n";
+                    
+                    int senderPort = RemoteIpEndPoint.Port;
+                    
+
+                    UdpClient udpClient2 = new UdpClient();
+                    udpClient2.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
+                    udpClient2.Connect(senderAddress, senderPort);
+                    string message2 = "ACK! " + Convert.ToString(randomInt);
+                    message2 = Convert.ToString(senderPort);
+                    Byte[] sendBytes = Encoding.ASCII.GetBytes(message2);
+                    udpClient2.Send(sendBytes, sendBytes.Length);
+                    udpClient2.Close();
+
+                    
                 }
                 while (isStarted);
                 udpClient.Close();
-                udpClient2.Close();
+                
             }
             catch (Exception ex)
             {

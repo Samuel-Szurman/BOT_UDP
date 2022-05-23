@@ -14,7 +14,10 @@
         <Label Content="INCOMING DATA" HorizontalAlignment="Left" Margin="58,252,0,0" VerticalAlignment="Top" FontWeight="Bold"/>
         <TextBox x:Name="IP_textBox" HorizontalAlignment="Left" Margin="45,121,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="325"/>
         <TextBox x:Name="port_textBox" HorizontalAlignment="Left" Margin="45,165,0,0" Text="50000" TextWrapping="Wrap" VerticalAlignment="Top" Width="325"/>
-        <TextBlock x:Name="messageTextBlock" HorizontalAlignment="Left" Margin="61,283,0,0" Text="TextBlock" TextWrapping="Wrap" VerticalAlignment="Top" Height="117" Width="712"/>
+        <ScrollViewer
+            VerticalScrollBarVisibility="Auto">
+            <TextBlock x:Name="messageTextBlock" HorizontalAlignment="Left" Margin="61,283,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="117" Width="712" ><Run Language="pl-pl"/></TextBlock>
+        </ScrollViewer>
         <Label Content="UDP-BOT v1.0.0" HorizontalAlignment="Left" Margin="723,41,0,0" VerticalAlignment="Top" FontWeight="Bold"/>
         <Button x:Name="start_stop_button" Content="START" HorizontalAlignment="Left" Margin="45,0,0,0" VerticalAlignment="Center" Width="325" Click="start_stop_button_Click"/>
 
